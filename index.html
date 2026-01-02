@@ -3,302 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر ريفان للجمال | فخامة عمانية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>متجر أسرار الجمال | فخامة عمانية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --oman-red: #8b0000; /* الأحمر العماني الملكي */
-            --luxury-gold: #c5a059;
-            --soft-white: #f8f9fa;
-            --dark-royal: #1a1a1a;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #fff;
-            margin: 0;
-            color: var(--dark-royal);
-        }
-
-        /* نمط النقش العماني في الخلفية */
-        .pattern-bg {
-            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
-            opacity: 0.05;
-            position: fixed; width: 100%; height: 100%; z-index: -1;
-        }
-
-        /* الهيدر الاحترافي */
-        header {
-            background: white;
-            padding: 10px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            position: sticky; top: 0; z-index: 1000;
-        }
-
-        .logo { 
-            font-weight: 800; font-size: 28px; 
-            color: var(--oman-red); 
-            letter-spacing: -1px;
-        }
-
-        .cart-trigger {
-            position: relative; cursor: pointer;
-            background: var(--soft-white);
-            padding: 12px 20px; border-radius: 12px;
-            border: 1px solid #eee;
-            transition: 0.3s;
-        }
-
-        #cart-count {
-            background: var(--oman-red);
-            color: white; padding: 2px 8px;
-            border-radius: 50%; font-size: 12px;
-            margin-right: 8px;
-        }
-
-        /* قسم العروض (Hero Section) مثل Temu */
-        .hero-banner {
-            background: linear-gradient(45deg, var(--oman-red), var(--dark-royal));
-            color: white; padding: 40px 5%;
-            text-align: center; margin: 20px 5%;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(139, 0, 0, 0.2);
-        }
-
-        /* شبكة المنتجات العالمية */
-        .container { padding: 20px 5%; }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card {
-            background: white; border-radius: 15px;
-            overflow: hidden; border: 1px solid #f0f0f0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
-
-        .product-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-
-        .product-badge {
-            position: absolute; top: 10px; right: 10px;
-            background: rgba(197, 160, 89, 0.9);
-            color: white; padding: 4px 12px;
-            border-radius: 20px; font-size: 11px; font-weight: bold;
-        }
-
-        .product-img { width: 100%; height: 230px; object-fit: cover; }
-
-        .product-info { padding: 15px; }
-        
-        .product-name { font-weight: 700; font-size: 16px; margin-bottom: 8px; height: 45px; overflow: hidden; }
-
-        .price-tag { 
-            color: var(--oman-red); font-size: 20px; font-weight: 800; 
-            display: flex; align-items: baseline; gap: 5px;
-        }
-        .currency { font-size: 12px; color: #777; }
-
-        .add-to-cart-btn {
-            background: var(--dark-royal); color: white;
-            border: none; padding: 12px; width: 100%;
-            border-radius: 10px; cursor: pointer;
-            font-weight: 700; margin-top: 15px;
-            transition: 0.3s;
-        }
-
-        .add-to-cart-btn:hover { background: var(--luxury-gold); }
-
-        /* سلة المشتريات الجانبية */
-        #cart-panel {
-            position: fixed; top: 0; left: -100%;
-            width: 100%; max-width: 400px; height: 100%;
-            background: white; z-index: 3000;
-            box-shadow: 5px 0 30px rgba(0,0,0,0.2);
-            transition: 0.5s; padding: 25px;
-            display: flex; flex-direction: column;
-        }
-
-        #cart-panel.active { left: 0; }
-
-        .cart-items-container { flex-grow: 1; overflow-y: auto; margin-top: 20px; }
-
-        .cart-item {
-            display: flex; gap: 15px; padding: 15px 0;
-            border-bottom: 1px solid #f0f0f0; align-items: center;
-        }
-
-        .cart-item img { width: 60px; height: 60px; border-radius: 10px; }
-
-        /* الأزرار النهائية */
-        .checkout-area {
-            border-top: 2px solid #eee; padding-top: 20px;
-        }
-
-        .btn-whatsapp {
-            background: #25D366; color: white; width: 100%;
-            padding: 18px; border-radius: 15px; border: none;
-            font-size: 18px; font-weight: 800; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-        }
-
-        /* نموذج البيانات */
-        .input-luxury {
-            width: 100%; padding: 15px; margin-bottom: 12px;
-            border: 2px solid #f0f0f0; border-radius: 12px;
-            box-sizing: border-box; font-family: 'Cairo';
-        }
-
+        :root { --oman-red: #8b0000; --gold: #c5a059; --dark: #1a1a1a; --bg: #fcfcfc; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; color: var(--dark); }
+        header { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 900; font-size: 26px; color: var(--oman-red); border-right: 4px solid var(--gold); padding-right: 15px; }
+        .cart-icon { cursor: pointer; background: var(--oman-red); color: white; padding: 10px 20px; border-radius: 50px; font-weight: bold; position: relative; }
+        #cart-count { position: absolute; top: -5px; right: -5px; background: var(--gold); border-radius: 50%; padding: 2px 7px; font-size: 12px; }
+        .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800'); background-size: cover; height: 250px; display: flex; align-items: center; justify-content: center; color: white; text-align: center; margin-bottom: 30px; }
+        .container { padding: 0 5% 50px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        .card { background: white; border-radius: 15px; overflow: hidden; border: 1px solid #eee; transition: 0.3s; position: relative; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .badge { position: absolute; top: 10px; right: 10px; background: var(--gold); color: white; padding: 3px 10px; border-radius: 20px; font-size: 11px; }
+        .price { color: var(--oman-red); font-weight: 900; font-size: 20px; margin: 10px 0; }
+        .add-btn { background: var(--dark); color: white; border: none; padding: 12px; width: 100%; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        .add-btn:hover { background: var(--oman-red); }
+        /* سلة المشتريات */
+        #cart-sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 380px; height: 100%; background: white; z-index: 2000; transition: 0.5s; box-shadow: 5px 0 30px rgba(0,0,0,0.3); padding: 25px; display: flex; flex-direction: column; }
+        #cart-sidebar.active { left: 0; }
+        .cart-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .wa-btn { background: #25D366; color: white; border: none; padding: 18px; border-radius: 12px; width: 100%; font-size: 18px; font-weight: 800; cursor: pointer; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-<div class="pattern-bg"></div>
-
 <header>
-    <div class="logo">RIFAN <span style="color: var(--luxury-gold); font-size: 14px; display: block;">Luxury Beauty</span></div>
-    <div class="cart-trigger" onclick="toggleCart(true)">
-        <span>السلة</span>
-        <span id="cart-count">0</span>
-        🛒
+    <div class="logo">ريفان للجمال</div>
+    <div class="cart-icon" onclick="toggleCart(true)">
+        سلة المشتريات <span id="cart-count">0</span>
     </div>
 </header>
 
-<div class="hero-banner">
-    <h1 style="margin:0; font-size: 24px;">تشكيلة العناية الملكية 2026</h1>
-    <p style="opacity: 0.9;">جمال مستوحى من الطبيعة بلمسة عمانية</p>
+<div class="hero">
+    <div>
+        <h1 style="font-size: 32px; margin:0;">سر جمالكِ في أصالتنا</h1>
+        <p>منتجات حصرية بلمسة عمانية فاخرة</p>
+    </div>
 </div>
 
 <div class="container">
-    <div class="products-grid" id="p-grid"></div>
+    <div class="products-grid" id="products-display">جاري تحميل المنتجات...</div>
 </div>
 
-<div id="cart-panel">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 style="margin:0; color: var(--oman-red);">سلة التسوق</h2>
-        <button onclick="toggleCart(false)" style="border:none; background:none; font-size: 24px; cursor: pointer;">✕</button>
+<div id="cart-sidebar">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="color:var(--oman-red);">حقيبة التسوق</h2>
+        <button onclick="toggleCart(false)" style="border:none; background:none; font-size:24px; cursor:pointer;">✕</button>
     </div>
-
-    <div class="cart-items-container" id="cart-list"></div>
-
-    <div class="checkout-area">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 20px; font-weight: 800;">
-            <span>المجموع:</span>
-            <span><span id="total-price">0.000</span> ر.ع</span>
+    <div id="cart-list" style="flex-grow:1; overflow-y:auto; margin:20px 0;"></div>
+    <div style="border-top:2px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-size:22px; font-weight:900; margin-bottom:15px;">
+            <span>الإجمالي:</span>
+            <span><span id="grand-total">0.000</span> ر.ع</span>
         </div>
-        
-        <div id="customer-info" style="display: none;">
-            <input type="text" id="user-name" class="input-luxury" placeholder="الاسم بالكامل">
-            <input type="tel" id="user-phone" class="input-luxury" placeholder="رقم الهاتف في عمان">
-        </div>
-
-        <button id="main-action-btn" class="add-to-cart-btn" style="padding: 18px;" onclick="showCheckoutFields()">تأكيد الطلب</button>
-        <button id="whatsapp-btn" class="btn-whatsapp" style="display: none;" onclick="sendWhatsApp()">
-            إرسال عبر واتساب ✅
-        </button>
+        <input type="text" id="cust-name" placeholder="الاسم بالكامل" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+        <input type="tel" id="cust-phone" placeholder="رقم الهاتف (9xxxxxxx)" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
+        <button class="wa-btn" onclick="checkout()">إتمام الطلب عبر واتساب ✅</button>
     </div>
 </div>
 
 <script>
-    const products = [
-        { id: 1, name: "مجموعة لبان الحوجري الملكية", price: 28.500, img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=300", badge: "الأكثر مبيعاً" },
-        { id: 2, name: "سيروم الذهب والزعفران", price: 15.900, img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=300", badge: "جديد" },
-        { id: 3, name: "قناع الورد الجبلي العماني", price: 9.000, img: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=300", badge: "طبيعي 100%" },
-        { id: 4, name: "بخاخ تكثيف الشعر بالزيوت الشرقية", price: 12.500, img: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&w=300", badge: "عروض" }
-    ];
-
+    // بيانات GitHub - استبدليها ببياناتك
+    const OWNER = "اسم_حسابك_هنا";
+    const REPO = "اسم_المستودع_هنا";
     let cart = [];
 
-    function renderProducts() {
-        document.getElementById('p-grid').innerHTML = products.map(p => `
-            <div class="product-card">
-                <div class="product-badge">${p.badge}</div>
-                <img src="${p.img}" class="product-img">
-                <div class="product-info">
-                    <div class="product-name">${p.name}</div>
-                    <div class="price-tag">${p.price.toFixed(3)} <span class="currency">ر.ع</span></div>
-                    <button class="add-to-cart-btn" onclick="addToCart(${p.id})">أضف للسلة +</button>
+    async function getProducts() {
+        const url = `https://raw.githubusercontent.com/faissaltunisia/souk/main/products.json?nocache=${new Date().getTime()}`;
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            render(data);
+        } catch(e) { document.getElementById('products-display').innerText = "يرجى إضافة منتجات من لوحة التحكم."; }
+    }
+
+    function render(data) {
+        document.getElementById('products-display').innerHTML = data.map(p => `
+            <div class="card">
+                <div class="badge">${p.badge || 'مميز'}</div>
+                <img src="${p.img}" style="width:100%; height:200px; object-fit:cover;">
+                <div style="padding:15px; text-align:center;">
+                    <div style="font-weight:700; height:45px;">${p.name}</div>
+                    <div class="price">${p.price.toFixed(3)} <span style="font-size:12px;">ر.ع</span></div>
+                    <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">إضافة للسلة +</button>
                 </div>
             </div>
         `).join('');
     }
 
-    function addToCart(id) {
-        const product = products.find(p => p.id === id);
-        const item = cart.find(i => i.id === id);
-        if(item) item.qty++;
-        else cart.push({...product, qty: 1});
+    function addToCart(name, price) {
+        const item = cart.find(i => i.name === name);
+        if(item) item.qty++; else cart.push({name, price, qty: 1});
         updateUI();
         toggleCart(true);
     }
 
     function updateUI() {
-        document.getElementById('cart-count').innerText = cart.reduce((s, i) => s + i.qty, 0);
-        renderCart();
-    }
-
-    function toggleCart(show) {
-        document.getElementById('cart-panel').style.left = show ? '0' : '-100%';
-    }
-
-    function renderCart() {
-        const list = document.getElementById('cart-list');
-        list.innerHTML = cart.map(item => `
+        document.getElementById('cart-count').innerText = cart.reduce((a,b)=>a+b.qty, 0);
+        document.getElementById('cart-list').innerHTML = cart.map(i => `
             <div class="cart-item">
-                <img src="${item.img}">
-                <div style="flex-grow:1">
-                    <div style="font-weight:700; font-size:14px;">${item.name}</div>
-                    <div style="color:var(--oman-red)">${(item.price * item.qty).toFixed(3)} ر.ع</div>
-                    <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
-                        <button onclick="changeQty(${item.id}, -1)" class="qty-btn">-</button>
-                        <span>${item.qty}</span>
-                        <button onclick="changeQty(${item.id}, 1)" class="qty-btn">+</button>
-                    </div>
-                </div>
+                <div style="flex-grow:1"><strong>${i.name}</strong><br><small>${i.qty} x ${i.price.toFixed(3)}</small></div>
+                <div style="font-weight:700">${(i.qty * i.price).toFixed(3)} ر.ع</div>
             </div>
         `).join('');
-        const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-        document.getElementById('total-price').innerText = total.toFixed(3);
+        const total = cart.reduce((a,b)=>a+(b.qty*b.price), 0);
+        document.getElementById('grand-total').innerText = total.toFixed(3);
     }
 
-    function changeQty(id, delta) {
-        const item = cart.find(i => i.id === id);
-        item.qty += delta;
-        if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
-        updateUI();
+    function toggleCart(s) { document.getElementById('cart-sidebar').classList.toggle('active', s); }
+
+    function checkout() {
+        const name = document.getElementById('cust-name').value;
+        const phone = document.getElementById('cust-phone').value;
+        if(!name || !phone || cart.length === 0) return alert("يرجى ملء البيانات وإضافة منتجات");
+        
+        let text = `*طلب جديد - ريفان للجمال*\n------------------\n`;
+        cart.forEach(i => text += `• ${i.name} (الكمية: ${i.qty})\n`);
+        text += `------------------\n*الإجمالي: ${document.getElementById('grand-total').innerText} ر.ع*\n\n`;
+        text += `*الزبون:* ${name}\n*الهاتف:* ${phone}`;
+        
+        window.open(`https://wa.me/96893936636?text=${encodeURIComponent(text)}`); // استبدلي الرقم برقمك
     }
 
-    function showCheckoutFields() {
-        if(cart.length === 0) return alert("السلة فارغة");
-        document.getElementById('customer-info').style.display = 'block';
-        document.getElementById('main-action-btn').style.display = 'none';
-        document.getElementById('whatsapp-btn').style.display = 'flex';
-    }
-
-    function sendWhatsApp() {
-        const name = document.getElementById('user-name').value;
-        const phone = document.getElementById('user-phone').value;
-        if(!name || !phone) return alert("يرجى إدخال البيانات المطلوبة");
-
-        let msg = `*طلب شراء جديد - متجر ريفان*\n`;
-        msg += `------------------------------\n`;
-        cart.forEach(i => msg += `📦 ${i.name}\nالكمية: ${i.qty} | السعر: ${(i.price * i.qty).toFixed(3)} ر.ع\n\n`);
-        msg += `------------------------------\n`;
-        msg += `*المجموع الكلي: ${document.getElementById('total-price').innerText} ر.ع*\n\n`;
-        msg += `*الزبون:* ${name}\n`;
-        msg += `*رقم التواصل:* ${phone}`;
-
-        window.open(`https://wa.me/96800000000?text=${encodeURIComponent(msg)}`);
-    }
-
-    renderProducts();
+    getProducts();
 </script>
-
 </body>
 </html>
