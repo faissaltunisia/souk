@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوق ريفان للجمال | فخامة عمانية</title>
+    <title>متجر ريفان للجمال | فخامة عمانية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --oman-red: #8b0000; --gold: #c5a059; --dark: #1a1a1a; --bg: #fcfcfc; }
@@ -21,6 +21,7 @@
         .price { color: var(--oman-red); font-weight: 900; font-size: 20px; margin: 10px 0; }
         .add-btn { background: var(--dark); color: white; border: none; padding: 12px; width: 100%; cursor: pointer; font-weight: 700; transition: 0.3s; }
         .add-btn:hover { background: var(--oman-red); }
+        /* سلة المشتريات */
         #cart-sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 380px; height: 100%; background: white; z-index: 2000; transition: 0.5s; box-shadow: 5px 0 30px rgba(0,0,0,0.3); padding: 25px; display: flex; flex-direction: column; }
         #cart-sidebar.active { left: 0; }
         .cart-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
@@ -30,16 +31,16 @@
 <body>
 
 <header>
-    <div class="logo">سوق ريفان</div>
+    <div class="logo">ريفان للجمال</div>
     <div class="cart-icon" onclick="toggleCart(true)">
-        السلة <span id="cart-count">0</span>
+        سلة المشتريات <span id="cart-count">0</span>
     </div>
 </header>
 
 <div class="hero">
     <div>
-        <h1 style="font-size: 32px; margin:0;">جمالكِ يبدأ من عُمان</h1>
-        <p>توصيل لجميع ولايات السلطنة 🇴🇲</p>
+        <h1 style="font-size: 32px; margin:0;">سر جمالكِ في أصالتنا</h1>
+        <p>منتجات حصرية بلمسة عمانية فاخرة</p>
     </div>
 </div>
 
@@ -59,33 +60,35 @@
             <span><span id="grand-total">0.000</span> ر.ع</span>
         </div>
         <input type="text" id="cust-name" placeholder="الاسم بالكامل" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
-        <button class="wa-btn" onclick="checkout()">تأكيد الطلب (واتساب) ✅</button>
+        <input type="tel" id="cust-phone" placeholder="رقم الهاتف (9xxxxxxx)" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
+        <button class="wa-btn" onclick="checkout()">إتمام الطلب عبر واتساب ✅</button>
     </div>
 </div>
 
 <script>
-    const OWNER = "faissaltunisia";
-    const REPO = "souk";
+    // بيانات GitHub - استبدليها ببياناتك
+    const OWNER = "اسم_حسابك_هنا";
+    const REPO = "اسم_المستودع_هنا";
     let cart = [];
 
     async function getProducts() {
-        const url = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/products.json?v=${Date.now()}`;
+        const url = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/products.json?nocache=${new Date().getTime()}`;
         try {
             const res = await fetch(url);
             const data = await res.json();
             render(data);
-        } catch(e) { document.getElementById('products-display').innerText = "المتجر فارغ حالياً."; }
+        } catch(e) { document.getElementById('products-display').innerText = "يرجى إضافة منتجات من لوحة التحكم."; }
     }
 
     function render(data) {
         document.getElementById('products-display').innerHTML = data.map(p => `
             <div class="card">
-                <div class="badge">${p.badge || 'جديد'}</div>
+                <div class="badge">${p.badge || 'مميز'}</div>
                 <img src="${p.img}" style="width:100%; height:200px; object-fit:cover;">
                 <div style="padding:15px; text-align:center;">
                     <div style="font-weight:700; height:45px;">${p.name}</div>
-                    <div class="price">${p.price.toFixed(3)} ر.ع</div>
-                    <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">أضيفي للسلة +</button>
+                    <div class="price">${p.price.toFixed(3)} <span style="font-size:12px;">ر.ع</span></div>
+                    <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">إضافة للسلة +</button>
                 </div>
             </div>
         `).join('');
@@ -114,12 +117,17 @@
 
     function checkout() {
         const name = document.getElementById('cust-name').value;
-        if(!name || cart.length === 0) return alert("أكملي البيانات");
-        let text = `*طلب جديد من سوق ريفان*\nالزبون: ${name}\n`;
-        cart.forEach(i => text += `- ${i.name} (x${i.qty})\n`);
-        text += `الإجمالي: ${document.getElementById('grand-total').innerText} ر.ع`;
-        window.open(`https://wa.me/96800000000?text=${encodeURIComponent(text)}`);
+        const phone = document.getElementById('cust-phone').value;
+        if(!name || !phone || cart.length === 0) return alert("يرجى ملء البيانات وإضافة منتجات");
+        
+        let text = `*طلب جديد - ريفان للجمال*\n------------------\n`;
+        cart.forEach(i => text += `• ${i.name} (الكمية: ${i.qty})\n`);
+        text += `------------------\n*الإجمالي: ${document.getElementById('grand-total').innerText} ر.ع*\n\n`;
+        text += `*الزبون:* ${name}\n*الهاتف:* ${phone}`;
+        
+        window.open(`https://wa.me/96800000000?text=${encodeURIComponent(text)}`); // استبدلي الرقم برقمك
     }
+
     getProducts();
 </script>
 </body>
