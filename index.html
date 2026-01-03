@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>أسرار الجمال | BEAUTY SECRETS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --nude-bg: #fdf8f5;
+            --royal-maroon: #5d001e;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(93, 0, 30, 0.08);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--nude-bg);
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .logo-text {
+            font-size: clamp(20px, 5vw, 28px);
+            font-weight: 900;
+            color: var(--royal-maroon);
+        }
+
+        .cart-btn {
+            background: var(--royal-maroon);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .cart-badge {
+            background: var(--gold);
+            color: var(--royal-maroon);
+            min-width: 20px; height: 20px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 11px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px 5% 100px;
+            max-width: 1300px;
+            margin: auto;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-badge {
+            position: absolute; top: 15px; left: 15px;
+            background: var(--gold); color: var(--royal-maroon);
+            padding: 2px 8px; border-radius: 5px; font-size: 11px; font-weight: 900;
+            z-index: 5;
+        }
+
+        .card-img {
+            width: 100%; aspect-ratio: 1/1;
+            border-radius: 12px; object-fit: cover; margin-bottom: 10px;
+        }
+
+        .card-name { font-size: 15px; font-weight: 700; height: 42px; overflow: hidden; margin-bottom: 5px; }
+        .card-price { font-size: 18px; font-weight: 900; color: var(--royal-maroon); margin-bottom: 10px; }
+
+        .add-to-cart {
+            background: var(--royal-maroon); color: white; border: none;
+            padding: 10px; border-radius: 8px; font-family: 'Cairo';
+            font-weight: 700; cursor: pointer;
+        }
+
+        #cart-sidebar {
+            position: fixed; top: 0; left: -100%; width: 350px; max-width: 100%;
+            height: 100%; background: white; z-index: 2000; transition: 0.3s;
+            padding: 20px; display: flex; flex-direction: column; box-shadow: 10px 0 50px rgba(0,0,0,0.1);
+        }
+        #cart-sidebar.active { left: 0; }
+
+        .qty-controls { display: flex; align-items: center; gap: 8px; background: #f0f0f0; padding: 5px; border-radius: 5px; }
+        .qty-btn { background: var(--royal-maroon); color: white; border: none; width: 22px; height: 22px; border-radius: 4px; cursor: pointer; }
+
+        /* ستايل المدخلات الجديدة */
+        .order-form input {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd;
+            margin-bottom: 10px; font-family: 'Cairo'; outline: none;
+        }
+        .geo-btn {
+            background: #f0f0f0; color: #333; border: 1px dashed var(--royal-maroon);
+            padding: 10px; border-radius: 8px; width: 100%; cursor: pointer;
+            margin-bottom: 15px; font-family: 'Cairo'; font-weight: 600; display: flex;
+            align-items: center; justify-content: center; gap: 8px;
+        }
+        .geo-btn.success { background: #e8f5e9; border-color: #2e7d32; color: #2e7d32; }
+
+        @media (max-width: 850px) {
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-text">أسرار الجمال</div>
+    <div class="cart-btn" onclick="toggleCart(true)">
+        <span>السلة</span>
+        <div class="cart-badge" id="cart-count">0</div>
+    </div>
+</header>
+
+<main class="products-grid" id="grid">
+    <p style="grid-column: 1/-1; text-align:center;">جاري جلب أحدث المنتجات...</p>
+</main>
+
+<div id="cart-sidebar">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="color:var(--royal-maroon); margin:0;">سلة المشتريات</h3>
+        <button onclick="toggleCart(false)" style="background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-items" style="flex-grow:1; overflow-y:auto; margin: 20px 0;"></div>
+    
+    <div style="border-top: 1px solid #eee; padding-top:15px;" class="order-form">
+        <div style="display:flex; justify-content:space-between; font-size:18px; font-weight:900; margin-bottom:10px;">
+            <span>الإجمالي:</span>
+            <span><span id="total-price">0.000</span> ر.ع</span>
+        </div>
+        
+        <input type="text" id="user-name" placeholder="الاسم الكامل">
+        <input type="tel" id="user-phone" placeholder="رقم الهاتف">
+        
+        <button class="geo-btn" id="geo-btn" onclick="getLocation()">
+            📍 تحديد موقعي (اختياري)
+        </button>
+
+        <button onclick="sendOrder()" style="background: #25D366; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-size: 16px; font-weight: 900; cursor: pointer; font-family: 'Cairo';">إرسال الطلب عبر واتساب</button>
+    </div>
+</div>
+
+<script>
+    const OWNER = "faissaltunisia";
+    const REPO = "souk";
+    let cart = [];
+    let userLocation = "";
+
+    async function loadProducts() {
+        try {
+            const cacheBuster = new Date().getTime();
+            const url = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/products.json?t=${cacheBuster}`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error();
+            const products = await response.json();
+            renderProducts(products);
+        } catch (error) {
+            document.getElementById('grid').innerHTML = "<p style='grid-column: 1/-1; text-align:center;'>حدث خطأ أثناء تحميل البيانات.</p>";
+        }
+    }
+
+    function renderProducts(products) {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = products.map(p => `
+            <div class="card">
+                ${p.badge ? `<div class="card-badge">${p.badge}</div>` : ''}
+                <img src="${p.img}" class="card-img" onerror="this.src='https://via.placeholder.com/300'">
+                <div class="card-name">${p.name}</div>
+                <div class="card-price">${parseFloat(p.price).toFixed(3)} ر.ع</div>
+                <button class="add-to-cart" onclick="addToCart('${p.name}', ${p.price})">إضافة للسلة</button>
+            </div>
+        `).join('');
+    }
+
+    function addToCart(name, price) {
+        const item = cart.find(i => i.name === name);
+        if(item) item.qty++; else cart.push({name, price, qty: 1});
+        updateUI();
+        toggleCart(true);
+    }
+
+    function changeQty(index, delta) {
+        cart[index].qty += delta;
+        if (cart[index].qty <= 0) cart.splice(index, 1);
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
+        document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding:8px; background:#fdf8f5; border-radius:8px;">
+                <div style="flex:1; font-size:13px;"><strong>${i.name}</strong><br>${(i.qty * i.price).toFixed(3)} ر.ع</div>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="changeQty(${idx}, -1)">-</button>
+                    <span style="font-weight:bold">${i.qty}</span>
+                    <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+                </div>
+            </div>
+        `).join('');
+        document.getElementById('total-price').innerText = cart.reduce((a, b) => a + (b.qty * b.price), 0).toFixed(3);
+    }
+
+    function toggleCart(s) { document.getElementById('cart-sidebar').classList.toggle('active', s); }
+
+    // دالة الحصول على الموقع
+    function getLocation() {
+        const btn = document.getElementById('geo-btn');
+        if (navigator.geolocation) {
+            btn.innerText = "جاري التحديد...";
+            navigator.geolocation.getCurrentPosition((pos) => {
+                userLocation = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                btn.innerText = "✅ تم تحديد الموقع";
+                btn.classList.add('success');
+            }, () => {
+                alert("تعذر الوصول للموقع. يرجى تفعيل الـ GPS");
+                btn.innerText = "📍 تحديد موقعي (اختياري)";
+            });
+        }
+    }
+
+    function sendOrder() {
+        const name = document.getElementById('user-name').value;
+        const phone = document.getElementById('user-phone').value;
+        if(!name || !phone || cart.length === 0) return alert("يرجى إكمال الاسم ورقم الهاتف واختيار المنتجات");
+        
+        let msg = `*طلب شراء جديد من أسرار الجمال*\n`;
+        msg += `--------------------------\n`;
+        msg += `👤 *الاسم:* ${name}\n`;
+        msg += `📞 *الهاتف:* ${phone}\n`;
+        if(userLocation) msg += `📍 *الموقع:* ${userLocation}\n`;
+        msg += `--------------------------\n`;
+        msg += `📦 *الطلبات:*\n`;
+        cart.forEach(i => msg += `• ${i.name} (${i.qty})\n`);
+        msg += `--------------------------\n`;
+        msg += `💰 *الإجمالي:* ${document.getElementById('total-price').innerText} ر.ع`;
+        
+        window.open(`https://wa.me/96893936636?text=${encodeURIComponent(msg)}`);
+    }
+
+    loadProducts();
+</script>
+</body>
+</html>
