@@ -5,5 +5,12 @@
     "price": 0.004,
     "img": "https://raw.githubusercontent.com/faissaltunisia/souk/main/images/2.jpg",
     "badge": "عرض خاص"
+  },
+  {
+    "id": 1767402715167,
+    "name": "صابونة الجمال ",
+    "price": 0.003,
+    "img": "https://raw.githubusercontent.com/faissaltunisia/souk/main/images/1.jpg",
+    "badge": "عرض خاص"
   }
 ]
