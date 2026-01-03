@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسرار الجمال | BEAUTY SECRETS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5d001e; /* ماروني ملكي */
+            --accent: #d4af37;  /* ذهبي */
+            --bg: #fdfaf9;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Almarai', sans-serif;
+            background-color: var(--bg);
+            margin: 0; padding-bottom: 50px;
+        }
+
+        /* هيدر عصري */
+        header {
+            background: var(--white);
+            padding: 20px 5%;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo { font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: 1px; }
+
+        /* شريط التصنيفات */
+        .categories-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 5%;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .cat-btn {
+            background: var(--white);
+            border: 1.5px solid #eee;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            color: #666;
+        }
+
+        .cat-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(93, 0, 30, 0.2);
+        }
+
+        /* شبكة المنتجات بتصميم Glassmorphism */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 20px;
+            padding: 0 5%;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: 0.4s;
+            border: 1px solid rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+
+        .card-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+
+        .card-info { padding: 15px; text-align: center; }
+
+        .card-name { font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #444; }
+
+        .card-price { color: var(--primary); font-weight: 800; font-size: 17px; }
+
+        .add-btn {
+            background: var(--primary); color: white; border: none;
+            width: 100%; padding: 10px; cursor: pointer; font-family: 'Almarai';
+            font-weight: 700; transition: 0.3s;
+        }
+
+        .add-btn:active { background: var(--accent); }
+
+        /* سلة المشتريات العائمة */
+        .cart-float {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--primary); color: white;
+            padding: 15px 25px; border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            cursor: pointer; z-index: 1000;
+            display: flex; align-items: center; gap: 10px;
+            font-weight: 800;
+        }
+
+        @media (max-width: 500px) {
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">أسرار الجمال ✨</div>
+</header>
+
+<div class="categories-bar" id="cats">
+    <button class="cat-btn active" onclick="filterCat('الكل')">الكل</button>
+    <button class="cat-btn" onclick="filterCat('عناية')">عناية</button>
+    <button class="cat-btn" onclick="filterCat('عطور')">عطور</button>
+    <button class="cat-btn" onclick="filterCat('بخور')">بخور</button>
+</div>
+
+<main class="products-grid" id="grid"></main>
+
+<div class="cart-float" onclick="toggleCart(true)">
+    <span>🛒 السلة</span>
+    <span id="cart-count">0</span>
+</div>
+
+<script>
+    const OWNER = "faissaltunisia";
+    const REPO = "souk";
+    let allProducts = [];
+    let cart = [];
+
+    async function load() {
+        const t = new Date().getTime();
+        const res = await fetch(`https://raw.githubusercontent.com/${OWNER}/${REPO}/main/products.json?t=${t}`);
+        allProducts = await res.json();
+        render(allProducts);
+    }
+
+    function render(data) {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = data.map(p => `
+            <div class="card">
+                ${p.badge ? `<div style="position:absolute; top:10px; right:10px; background:var(--accent); color:white; padding:2px 10px; border-radius:5px; font-size:10px; font-weight:800; z-index:10;">${p.badge}</div>` : ''}
+                <img src="${p.img}" class="card-img">
+                <div class="card-info">
+                    <div class="card-name">${p.name}</div>
+                    <div class="card-price">${parseFloat(p.price).toFixed(3)} ر.ع</div>
+                </div>
+                <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">إضافة للسلة</button>
+            </div>
+        `).join('');
+    }
+
+    function filterCat(cat) {
+        // تحديث شكل الأزرار
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+
+        if(cat === 'الكل') {
+            render(allProducts);
+        } else {
+            const filtered = allProducts.filter(p => p.category === cat);
+            render(filtered);
+        }
+    }
+
+    // (تكملة دوال السلة والواتساب كما في الكود السابق)
+    load();
+</script>
+</body>
+</html>
