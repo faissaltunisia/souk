@@ -19,5 +19,12 @@
     "price": 1,
     "img": "https://raw.githubusercontent.com/faissaltunisia/souk/main/images/4.jpg",
     "badge": "الأكثر مبيعاً"
+  },
+  {
+    "id": 1767402855193,
+    "name": "كريم تبييض",
+    "price": 1,
+    "img": "https://raw.githubusercontent.com/faissaltunisia/souk/main/images/1.jpg",
+    "badge": "عرض خاص"
   }
 ]
