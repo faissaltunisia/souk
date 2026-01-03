@@ -3,76 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوق ريفان | الفخامة العمانية</title>
+    <title>سوق ريفان | فخر الصناعة العمانية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --royal-red: #720000; --deep-red: #4a0000; --oman-gold: #d4af37; --bg-gray: #fcfcfc; --text-dark: #1d1d1f; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg-gray); margin: 0; color: var(--text-dark); overflow-x: hidden; }
-        
-        /* Navbar */
-        header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 15px 6%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
-        .brand-name { font-weight: 900; font-size: 28px; background: linear-gradient(to left, var(--royal-red), var(--oman-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-        .cart-bubble { background: var(--royal-red); color: white; padding: 10px 22px; border-radius: 50px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(114, 0, 0, 0.3); }
+        :root {
+            --primary: #720000; /* أحمر ملكي */
+            --accent: #d4af37;  /* ذهبي عماني */
+            --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --glass: rgba(255, 255, 255, 0.85);
+            --shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
 
-        /* Hero */
-        .hero { height: 350px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; text-align: center; border-radius: 0 0 50px 50px; margin-bottom: 40px; }
-        .hero h1 { font-size: 45px; margin: 0; font-weight: 900; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-gradient);
+            margin: 0;
+            color: #2d3436;
+            min-height: 100vh;
+        }
 
-        /* Grid */
-        .main-container { padding: 0 6% 80px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; }
+        /* هيدر زجاجي احترافي */
+        header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
 
-        /* Card - Alibaba/Temu Style */
-        .card { background: white; border-radius: 25px; overflow: hidden; transition: 0.4s; border: 1px solid rgba(0,0,0,0.03); position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .img-box { width: 100%; height: 280px; overflow: hidden; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .card:hover .img-box img { transform: scale(1.1); }
-        .card-badge { position: absolute; top: 15px; right: 15px; background: var(--oman-gold); color: var(--deep-red); padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: 800; z-index: 2; }
-        .card-body { padding: 20px; text-align: center; }
-        .item-name { font-weight: 700; font-size: 19px; margin-bottom: 8px; }
-        .item-price { font-size: 24px; font-weight: 900; color: var(--royal-red); margin-bottom: 15px; }
-        .add-btn { background: var(--text-dark); color: white; border: none; padding: 14px; border-radius: 15px; width: 100%; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .add-btn:hover { background: var(--royal-red); }
+        .logo {
+            font-size: 30px;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
 
-        /* Cart Panel */
-        #cart-panel { position: fixed; top: 0; left: -100%; width: 100%; max-width: 400px; height: 100%; background: white; z-index: 2001; transition: 0.5s; box-shadow: 10px 0 50px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
-        #cart-panel.open { left: 0; }
-        .cart-top { padding: 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .cart-content { flex-grow: 1; padding: 20px; overflow-y: auto; }
-        .cart-footer { padding: 25px; background: #f9f9f9; }
-        .whatsapp-btn { background: #25D366; color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: 900; cursor: pointer; }
+        .cart-btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(114, 0, 0, 0.2);
+        }
+
+        .cart-btn:hover { transform: scale(1.05); background: var(--accent); }
+
+        /* منطقة الترحيب الفاخرة */
+        .hero-banner {
+            margin: 30px 8%;
+            height: 300px;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1512232930482-628046fe271f?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-banner h1 { font-size: 48px; margin: 0; font-weight: 900; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+        /* حاوية المنتجات */
+        .main-content { padding: 40px 8%; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 35px;
+        }
+
+        /* تصميم البطاقة الاحترافي */
+        .card {
+            background: white;
+            border-radius: 35px;
+            padding: 15px;
+            transition: 0.5s;
+            border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 25px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: var(--accent);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .card-info { text-align: center; padding: 10px; }
+        .card-info h3 { margin: 0 0 10px 0; font-size: 20px; font-weight: 700; color: #1e272e; }
+        .price { font-size: 24px; font-weight: 900; color: var(--primary); margin-bottom: 20px; display: block; }
+
+        .btn-add {
+            background: #f1f2f6;
+            border: none;
+            padding: 15px;
+            border-radius: 20px;
+            width: 100%;
+            font-family: 'Cairo';
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--primary);
+        }
+
+        .btn-add:hover { background: var(--primary); color: white; }
+
+        /* سلة المشتريات الجانبية */
+        #cart-sidebar {
+            position: fixed; top: 0; left: -100%; width: 100%; max-width: 400px;
+            height: 100%; background: white; z-index: 2000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            box-shadow: 20px 0 50px rgba(0,0,0,0.1); padding: 40px; display: flex; flex-direction: column;
+        }
+        #cart-sidebar.active { left: 0; }
+
+        .whatsapp-btn {
+            background: #25D366; color: white; border: none; padding: 20px;
+            border-radius: 20px; width: 100%; font-size: 18px; font-weight: 900;
+            cursor: pointer; margin-top: 20px; box-shadow: 0 10px 20px rgba(37,211,102,0.2);
+        }
 
         @media (max-width: 768px) {
             .grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .img-box { height: 180px; }
-            .hero h1 { font-size: 28px; }
+            .hero-banner h1 { font-size: 30px; }
+            .hero-banner { height: 200px; margin: 20px 5%; }
+            .card { border-radius: 25px; padding: 10px; }
+            .card img { height: 160px; border-radius: 18px; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <a href="#" class="brand-name">RIFAN SOUQ</a>
-    <div class="cart-bubble" onclick="toggleCart(true)">🛒 <span id="cart-count">0</span></div>
+    <a href="#" class="logo">RIFAN</a>
+    <div class="cart-btn" onclick="toggleCart(true)">
+        <span>🛒</span>
+        <span id="cart-count">0</span>
+    </div>
 </header>
 
-<div class="hero">
-    <h1>الفخامة العمانية الأصيلة</h1>
+<div class="hero-banner">
+    <h1>ريفان للجمال</h1>
+    <p>جوهر الطبيعة العمانية في متناول يدك</p>
 </div>
 
-<div class="main-container">
-    <div class="grid" id="products-list">
+<div class="main-content">
+    <div class="grid" id="product-grid">
         </div>
 </div>
 
-<div id="cart-panel">
-    <div class="cart-top"><h2>حقيبة التسوق</h2><button onclick="toggleCart(false)" style="background:none; border:none; font-size:30px; cursor:pointer;">✕</button></div>
-    <div class="cart-content" id="cart-items"></div>
-    <div class="cart-footer">
-        <div style="display:flex; justify-content:space-between; font-size:20px; font-weight:900; margin-bottom:15px;"><span>الإجمالي:</span><span id="total-val">0.000</span> ر.ع</div>
-        <input type="text" id="cust-name" placeholder="اسمكِ الكريم" style="width:100%; padding:15px; border-radius:10px; border:1px solid #ddd; margin-bottom:15px; font-family:'Cairo'; box-sizing: border-box;">
-        <button class="whatsapp-btn" onclick="checkout()">تأكيد الطلب عبر واتساب</button>
+<div id="cart-sidebar">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="color:var(--primary); margin:0;">حقيبة التسوق</h2>
+        <button onclick="toggleCart(false)" style="background:none; border:none; font-size:30px; cursor:pointer;">✕</button>
+    </div>
+    <hr style="margin: 25px 0; opacity:0.1;">
+    <div id="cart-items" style="flex-grow:1; overflow-y:auto;"></div>
+    <div style="border-top:1px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-size:22px; font-weight:900;">
+            <span>الإجمالي:</span>
+            <span style="color:var(--primary)"><span id="total-price">0.000</span> ر.ع</span>
+        </div>
+        <input type="text" id="user-name" placeholder="اسمكِ الكريم" style="width:100%; padding:15px; border-radius:15px; border:1px solid #eee; margin-top:20px; font-family:'Cairo'; outline:none;">
+        <button class="whatsapp-btn" onclick="sendOrder()">تأكيد الطلب عبر واتساب ✅</button>
     </div>
 </div>
 
@@ -80,79 +210,71 @@
     const OWNER = "faissaltunisia";
     const REPO = "souk";
     
-    // المنتجات الـ 5 المبدئية - ستظهر فوراً
-    const initialItems = [
-        { name: "لبان حوجري ملكي نقي", price: 15.000, img: "https://images.unsplash.com/photo-1602928321679-560bb453f190?w=500", badge: "الأكثر مبيعاً" },
-        { name: "عطر ريفان السلطاني", price: 32.000, img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500", badge: "جديد" },
-        { name: "مخمرية العروس الخاصة", price: 12.500, img: "https://images.unsplash.com/photo-1590156221122-c748e7898783?w=500", badge: "طبيعي" },
-        { name: "بخور صلالة الفاخر", price: 18.000, img: "https://images.unsplash.com/photo-1595981267035-7b04ec82389e?w=500", badge: "حصري" },
-        { name: "زيت اللبان المركز", price: 9.900, img: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500", badge: "عرض" }
+    // المنتجات الاحترافية المدمجة
+    const defaultData = [
+        { name: "لبان حوجري ملكي", price: 15.000, img: "https://images.unsplash.com/photo-1602928321679-560bb453f190?w=500", tag: "الأكثر مبيعاً" },
+        { name: "عطر ريفان الخاص", price: 32.000, img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500", tag: "حصري" },
+        { name: "مخمرية العروس", price: 12.500, img: "https://images.unsplash.com/photo-1590156221122-c748e7898783?w=500", tag: "جديد" },
+        { name: "بخور صلالة الفاخر", price: 18.000, img: "https://images.unsplash.com/photo-1595981267035-7b04ec82389e?w=500", tag: "مميز" },
+        { name: "سيروم اللبان المركز", price: 9.900, img: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500", tag: "عرض" }
     ];
 
-    let userCart = [];
+    let cart = [];
 
-    async function start() {
-        // عرض المنتجات الـ 5 فوراً قبل أي محاولة تحميل
-        render(initialItems);
-
-        // محاولة جلب منتجات إضافية من GitHub
+    async function loadStore() {
+        const grid = document.getElementById('product-grid');
         try {
             const res = await fetch(`https://raw.githubusercontent.com/${OWNER}/${REPO}/main/products.json?v=${Date.now()}`);
-            if (res.ok) {
-                const cloudItems = await res.json();
-                if (cloudItems && cloudItems.length > 0) {
-                    // إذا وجدنا منتجات في GitHub، ندمجها مع المنتجات الـ 5
-                    render([...initialItems, ...cloudItems]);
-                }
-            }
-        } catch (e) { console.log("تحميل من الذاكرة المحلية فقط"); }
-    }
-
-    function render(items) {
-        document.getElementById('products-list').innerHTML = items.map(p => `
-            <div class="card">
-                <div class="card-badge">${p.badge}</div>
-                <div class="img-box"><img src="${p.img}"></div>
-                <div class="card-body">
-                    <div class="item-name">${p.name}</div>
-                    <div class="item-price">${parseFloat(p.price).toFixed(3)} ر.ع</div>
-                    <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">أضيفي للحقيبة +</button>
+            const cloudData = res.ok ? await res.json() : [];
+            const finalData = cloudData.length > 0 ? [...defaultData, ...cloudData] : defaultData;
+            
+            grid.innerHTML = finalData.map(p => `
+                <div class="card">
+                    <div class="tag">${p.tag || p.badge || 'أصلي'}</div>
+                    <img src="${p.img}">
+                    <div class="card-info">
+                        <h3>${p.name}</h3>
+                        <span class="price">${parseFloat(p.price).toFixed(3)} ر.ع</span>
+                        <button class="btn-add" onclick="addToCart('${p.name}', ${p.price})">أضيفي للسلة +</button>
+                    </div>
                 </div>
-            </div>
-        `).join('');
+            `).join('');
+        } catch (e) {
+            console.error("خطأ في التحميل، سيتم عرض المنتجات الافتراضية");
+        }
     }
 
     function addToCart(name, price) {
-        const item = userCart.find(i => i.name === name);
-        if(item) item.qty++; else userCart.push({name, price, qty: 1});
-        updateUI();
+        const item = cart.find(i => i.name === name);
+        if(item) item.qty++; else cart.push({name, price, qty: 1});
+        updateCart();
         toggleCart(true);
     }
 
-    function updateUI() {
-        document.getElementById('cart-count').innerText = userCart.reduce((a, b) => a + b.qty, 0);
-        document.getElementById('cart-items').innerHTML = userCart.map((i, idx) => `
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                <div><strong>${i.name}</strong><br><small>${i.qty} x ${i.price.toFixed(3)}</small></div>
-                <div>${(i.qty * i.price).toFixed(3)} <button onclick="del(${idx})" style="color:red; background:none; border:none; cursor:pointer">✕</button></div>
+    function updateCart() {
+        document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
+        document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
+                <div><strong style="display:block">${i.name}</strong><small>${i.qty} x ${i.price.toFixed(3)}</small></div>
+                <div style="font-weight:900; color:var(--primary)">${(i.qty * i.price).toFixed(3)} <span onclick="removeItem(${idx})" style="color:red; cursor:pointer; margin-right:10px;">✕</span></div>
             </div>
         `).join('');
-        document.getElementById('total-val').innerText = userCart.reduce((a, b) => a + (b.qty * b.price), 0).toFixed(3);
+        document.getElementById('total-price').innerText = cart.reduce((a, b) => a + (b.qty * b.price), 0).toFixed(3);
     }
 
-    function del(idx) { userCart.splice(idx, 1); updateUI(); }
-    function toggleCart(s) { document.getElementById('cart-panel').classList.toggle('open', s); }
+    function removeItem(idx) { cart.splice(idx, 1); updateCart(); }
+    function toggleCart(s) { document.getElementById('cart-sidebar').classList.toggle('active', s); }
 
-    function checkout() {
-        const name = document.getElementById('cust-name').value;
-        if(!name || userCart.length === 0) return alert("البيانات ناقصة");
-        let msg = `*طلب جديد من ريفان*\nالاسم: ${name}\n`;
-        userCart.forEach(i => msg += `- ${i.name} (${i.qty})\n`);
-        msg += `الإجمالي: ${document.getElementById('total-val').innerText} ر.ع`;
+    function sendOrder() {
+        const name = document.getElementById('user-name').value;
+        if(!name || cart.length === 0) return alert("يرجى ملء البيانات");
+        let msg = `*طلب جديد - سوق ريفان*\nالاسم: ${name}\n`;
+        cart.forEach(i => msg += `• ${i.name} (الكمية: ${i.qty})\n`);
+        msg += `الإجمالي: ${document.getElementById('total-price').innerText} ريال عماني`;
         window.open(`https://wa.me/96800000000?text=${encodeURIComponent(msg)}`);
     }
 
-    start();
+    loadStore();
 </script>
 </body>
 </html>
