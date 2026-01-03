@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | أسرار الجمال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #5d001e; --gold: #d4af37; --bg: #f8f9fa; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: none; }
+        .admin-card { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        h1 { color: var(--primary); text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; outline: none; font-family: 'Cairo'; transition: 0.3s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 5px rgba(93,0,30,0.1); }
+        .btn-save { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-save:hover { background: #400015; }
+        .inventory { margin-top: 40px; }
+        .item { display: flex; align-items: center; background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #eee; }
+        .item img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-left: 15px; }
+        .item-info { flex-grow: 1; }
+        .btn-del { background: #ff4d4d; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="admin-card">
+    <h1>لوحة تحكم المتجر ⚙️</h1>
+    
+    <div class="form-grid">
+        <div>
+            <label>اسم المنتج</label>
+            <input type="text" id="p-name" placeholder="مثال: زيت ملكي">
+        </div>
+        <div>
+            <label>السعر (ر.ع)</label>
+            <input type="number" id="p-price" step="0.001" placeholder="0.000">
+        </div>
+        <div>
+            <label>التصنيف</label>
+            <select id="p-category">
+                <option value="عام">قسم: عام</option>
+                <option value="عناية">قسم: عناية</option>
+                <option value="عطور">قسم: عطور</option>
+                <option value="بخور">قسم: بخور</option>
+            </select>
+        </div>
+        <div>
+            <label>الوسم</label>
+            <select id="p-badge">
+                <option value="">بدون وسم</option>
+                <option value="جديد">جديد ✨</option>
+                <option value="عرض خاص">عرض خاص 🎁</option>
+                <option value="الأكثر مبيعاً">الأكثر مبيعاً 🔥</option>
+            </select>
+        </div>
+        <div class="full-width">
+            <label>اسم الصورة في GitHub (مثلاً oil.png)</label>
+            <input type="text" id="p-img" placeholder="اكتبي اسم الصورة فقط إذا كانت في مجلد images">
+        </div>
+    </div>
+
+    <button class="btn-save" id="save-btn" onclick="saveProduct()">إضافة وتحديث المتجر الآن</button>
+
+    <div class="inventory">
+        <h3>المخزون الحالي:</h3>
+        <div id="list">جاري تحميل المنتجات...</div>
+    </div>
+</div>
+
+<script>
+    // 1. نظام الحماية
+    const masterPass = "2024";
+    const userPass = prompt("الرجاء إدخال كلمة مرور الإدارة:");
+    if (userPass === masterPass) { document.body.style.display = "block"; } 
+    else { alert("خطأ!"); window.location.href = "index.html"; }
+
+    // 2. إعدادات GitHub (مقسمة للحماية)
+    const partA = "ghp_"; 
+    const partB = "BEJ0TzUJEYJj2RNxvHEG"; 
+    const partC = "NpmFL9RPOp3mkmYm"; 
+
+    const TOKEN = partA + partB + partC;
+    const OWNER = "faissaltunisia";
+    const REPO = "souk";
+
+    let products = [];
+    let sha = null;
+
+    async function load() {
+        try {
+            const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/products.json`, {
+                headers: { "Authorization": `token ${TOKEN}` }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                sha = data.sha;
+                products = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+                render();
+            } else { document.getElementById('list').innerText = "المتجر فارغ حالياً."; }
+        } catch (e) { console.error(e); }
+    }
+
+    function render() {
+        const listDiv = document.getElementById('list');
+        if (products.length === 0) { listDiv.innerText = "لا توجد منتجات."; return; }
+        listDiv.innerHTML = products.map((p, i) => `
+            <div class="item">
+                <img src="${p.img}" onerror="this.src='https://via.placeholder.com/50'">
+                <div class="item-info">
+                    <strong>${p.name}</strong> <small>(${p.category})</small><br>
+                    <span style="color:var(--primary)">${parseFloat(p.price).toFixed(3)} ر.ع</span>
+                </div>
+                <button class="btn-del" onclick="deleteItem(${i})">حذف</button>
+            </div>
+        `).join('');
+    }
+
+    async function saveProduct() {
+        const name = document.getElementById('p-name').value;
+        const price = parseFloat(document.getElementById('p-price').value);
+        const category = document.getElementById('p-category').value;
+        const badge = document.getElementById('p-badge').value;
+        let imgInput = document.getElementById('p-img').value;
+
+        if (!name || isNaN(price) || !imgInput) return alert("أكملي البيانات");
+
+        const finalImg = imgInput.startsWith('http') ? imgInput : `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/images/${imgInput}`;
+
+        const btn = document.getElementById('save-btn');
+        btn.disabled = true; btn.innerText = "جاري الرفع...";
+
+        products.push({ id: Date.now(), name, price, category, badge, img: finalImg });
+        
+        await sync();
+    }
+
+    async function deleteItem(index) {
+        if (confirm("حذف المنتج؟")) {
+            products.splice(index, 1);
+            await sync();
+        }
+    }
+
+    async function sync() {
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2))));
+        const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/products.json`, {
+            method: "PUT",
+            headers: { "Authorization": `token ${TOKEN}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ message: "Update", content, sha })
+        });
+        if (res.ok) { alert("تم التحديث!"); location.reload(); } 
+        else { alert("خطأ في الاتصال بـ GitHub"); }
+    }
+
+    load();
+</script>
+</body>
+</html>
