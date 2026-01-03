@@ -2,31 +2,32 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ريفان للجمال | RIFAN BEAUTY</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --soft-pink: #f8ecea; /* لون نود ناعم */
-            --deep-maroon: #5d001e; /* أحمر خمري فخم */
-            --gold-gradient: linear-gradient(45deg, #d4af37, #f2d06b);
-            --glass-white: rgba(255, 255, 255, 0.9);
+            --nude-bg: #fdf8f5;
+            --royal-maroon: #5d001e;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(93, 0, 30, 0.08);
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Cairo', sans-serif;
+            background-color: var(--nude-bg);
+            background-image: radial-gradient(#e9d5d0 0.5px, transparent 0.5px);
+            background-size: 20px 20px; /* خلفية منقطة ناعمة جداً */
             margin: 0;
-            background-color: var(--soft-pink);
-            /* خلفية جمالية بنقش متلألئ خفيف */
-            background-image: url('https://www.transparenttextures.com/patterns/dust.png'), 
-                              linear-gradient(180deg, #fdf5f2 0%, #f8ecea 100%);
             color: #333;
-            overflow-x: hidden;
         }
 
-        /* الهيدر العلوي الفاخر */
+        /* هيدر المنصة */
         header {
-            background: var(--glass-white);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             padding: 15px 5%;
             display: flex;
@@ -35,243 +36,242 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(93, 0, 30, 0.05);
-        }
-
-        .logo-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
 
         .logo-text {
-            font-size: 28px;
+            font-size: clamp(20px, 5vw, 28px);
             font-weight: 900;
-            background: linear-gradient(to left, var(--deep-maroon), var(--gold-gradient));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
+            color: var(--royal-maroon);
+            letter-spacing: 1px;
         }
 
         /* زر السلة العصري */
-        .cart-toggle {
-            position: relative;
-            background: var(--deep-maroon);
+        .cart-btn {
+            background: var(--royal-maroon);
             color: white;
             padding: 10px 20px;
-            border-radius: 15px;
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 10px;
             font-weight: 700;
             transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(93, 0, 30, 0.2);
+            box-shadow: 0 4px 15px rgba(93, 0, 30, 0.2);
         }
 
-        .cart-toggle:hover { transform: scale(1.05); background: #80002b; }
-
-        .cart-count {
-            background: var(--gold-gradient);
-            color: var(--deep-maroon);
-            width: 22px;
-            height: 22px;
+        .cart-badge {
+            background: var(--gold);
+            color: var(--royal-maroon);
+            min-width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 12px;
-            font-weight: 900;
+            font-size: 11px;
         }
 
-        /* البانر الترحيبي (Hero Header) */
-        .hero-banner {
+        /* بانر الصور العلوي */
+        .hero-section {
             width: 90%;
+            max-width: 1200px;
             margin: 20px auto;
-            height: 250px;
-            background: linear-gradient(rgba(93,0,30,0.4), rgba(93,0,30,0.1)), 
-                        url('https://images.unsplash.com/photo-1596462502278-27bfdc4033c8?q=80&w=1480&auto=format&fit=crop');
+            height: clamp(150px, 30vh, 350px);
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), 
+                        url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1487&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            border-radius: 30px;
+            border-radius: 25px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             color: white;
             text-align: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
         }
 
-        .hero-banner h1 { font-size: 36px; margin: 0; font-weight: 900; }
-        .hero-banner p { font-size: 18px; margin-top: 10px; font-weight: 300; letter-spacing: 1px; }
+        .hero-section h1 { font-size: clamp(24px, 6vw, 48px); font-weight: 900; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
 
-        /* شبكة المنتجات */
-        .container {
-            padding: 20px 5% 100px;
+        /* شبكة المنتجات الذكية */
+        .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr); /* 4 أعمدة للحاسوب */
             gap: 25px;
+            padding: 20px 5% 100px;
+            max-width: 1300px;
+            margin: auto;
         }
 
-        /* بطاقة المنتج - تصميم عالمي */
-        .product-card {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 25px;
-            overflow: hidden;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(5px);
-            position: relative;
+        /* بطاقة المنتج الفاخرة */
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(212, 175, 55, 0.1);
         }
 
-        .product-card:hover {
-            transform: translateY(-10px);
-            background: white;
-            box-shadow: 0 20px 40px rgba(93, 0, 30, 0.1);
-        }
+        .card:hover { transform: translateY(-8px); }
 
-        .image-area {
+        .card-img {
             width: 100%;
-            height: 300px;
-            overflow: hidden;
+            aspect-ratio: 1 / 1.1;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 12px;
         }
 
-        .image-area img { width: 100%; height: 100%; object-fit: cover; }
+        .card-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #444;
+            height: 44px; /* تثبيت الارتفاع لمنع التداخل */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
 
-        .product-info { padding: 20px; text-align: center; }
-        .product-name { font-size: 19px; font-weight: 700; color: #444; margin-bottom: 10px; }
-        .product-price { font-size: 22px; font-weight: 900; color: var(--deep-maroon); margin-bottom: 15px; }
+        .card-price {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--royal-maroon);
+            margin-bottom: 15px;
+        }
 
-        .add-btn {
-            background: var(--deep-maroon);
+        .add-to-cart {
+            background: var(--royal-maroon);
             color: white;
             border: none;
-            padding: 12px 0;
-            width: 100%;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: 'Cairo';
             font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
         }
 
-        .add-btn:hover { background: var(--gold-gradient); color: var(--deep-maroon); }
+        .add-to-cart:active { transform: scale(0.95); background: var(--gold); }
 
-        /* سلة المشتريات */
-        #cart-panel {
-            position: fixed; top: 0; left: -100%; width: 380px; max-width: 100%;
-            height: 100%; background: white; z-index: 2001; transition: 0.5s;
-            box-shadow: 10px 0 50px rgba(0,0,0,0.2); padding: 30px;
+        /* سلة المشتريات (Drawer) */
+        #cart-sidebar {
+            position: fixed; top: 0; left: -100%; width: 400px; max-width: 100%;
+            height: 100%; background: white; z-index: 2000; transition: 0.4s;
+            box-shadow: 10px 0 50px rgba(0,0,0,0.1); padding: 25px;
             display: flex; flex-direction: column;
         }
-        #cart-panel.open { left: 0; }
+        #cart-sidebar.active { left: 0; }
 
-        .whatsapp-order {
+        .whatsapp-btn {
             background: #25D366; color: white; border: none; padding: 18px;
-            border-radius: 15px; font-size: 18px; font-weight: 900; width: 100%;
-            cursor: pointer; margin-top: 20px;
+            border-radius: 12px; width: 100%; font-size: 18px; font-weight: 900;
+            cursor: pointer; margin-top: 20px; font-family: 'Cairo';
         }
 
-        /* استجابة الموبايل */
-        @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
-            .image-area { height: 180px; }
-            .hero-banner { height: 180px; width: 95%; }
-            .hero-banner h1 { font-size: 22px; }
-            .product-name { font-size: 14px; }
-            .product-price { font-size: 16px; }
+        /* تعديلات الموبايل (Responsive) */
+        @media (max-width: 900px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr); /* تحويل لعمودين في الهاتف */
+                gap: 12px;
+                padding: 10px;
+            }
+            .card { border-radius: 15px; padding: 8px; }
+            .card-name { font-size: 14px; height: 40px; }
+            .card-price { font-size: 17px; }
+            .hero-section { width: 95%; margin: 10px auto; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-box">
-        <span class="logo-text">RIFAN</span>
-    </div>
-    <div class="cart-toggle" onclick="toggleCart(true)">
-        <span>🛒</span>
-        <div class="cart-count" id="count-ui">0</div>
+    <div class="logo-text">RIFAN BEAUTY</div>
+    <div class="cart-btn" onclick="toggleCart(true)">
+        <span>🛒 السلة</span>
+        <div class="cart-badge" id="cart-count">0</div>
     </div>
 </header>
 
-<div class="hero-banner">
-    <h1>أسرار الجمال العُماني</h1>
-    <p>مجموعة ريفان المختارة بعناية</p>
+<div class="hero-section">
+    <h1>جمالكِ.. يستحق الأفضل</h1>
 </div>
 
-<div class="container" id="grid">
-    </div>
+<main class="products-grid" id="grid">
+    </main>
 
-<div id="cart-panel">
+<div id="cart-sidebar">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2>حقيبتكِ الجمالية</h2>
+        <h2 style="color:var(--royal-maroon)">حقيبتكِ</h2>
         <button onclick="toggleCart(false)" style="background:none; border:none; font-size:30px; cursor:pointer;">✕</button>
     </div>
-    <div id="cart-list" style="flex-grow:1; overflow-y:auto; margin: 20px 0;"></div>
-    <div style="border-top: 2px solid var(--soft-pink); padding-top:20px;">
+    <div id="cart-items" style="flex-grow:1; overflow-y:auto; margin: 20px 0;"></div>
+    <div style="border-top: 1px solid #eee; padding-top:20px;">
         <div style="display:flex; justify-content:space-between; font-size:22px; font-weight:900;">
             <span>الإجمالي:</span>
-            <span style="color:var(--deep-maroon)"><span id="total-price">0.000</span> ر.ع</span>
+            <span style="color:var(--royal-maroon)"><span id="total-price">0.000</span> ر.ع</span>
         </div>
-        <input type="text" id="user-name" placeholder="اسمكِ الكريم" style="width:100%; padding:15px; border-radius:10px; border:1px solid #ddd; margin-top:15px; font-family:'Cairo';">
-        <button class="whatsapp-order" onclick="sendOrder()">تأكيد الطلب عبر واتساب</button>
+        <input type="text" id="user-name" placeholder="أدخلي اسمكِ الكريم" style="width:100%; padding:15px; border-radius:10px; border:1px solid #ddd; margin-top:15px; font-family:'Cairo'; outline:none;">
+        <button class="whatsapp-btn" onclick="sendOrder()">تأكيد عبر واتساب ✅</button>
     </div>
 </div>
 
 <script>
-    const items = [
-        { name: "لبان حوجري ملكي", price: 15.000, img: "https://images.unsplash.com/photo-1602928321679-560bb453f190?w=500" },
-        { name: "عطر ريفان السلطاني", price: 32.000, img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500" },
-        { name: "مخمرية العروس الفاخرة", price: 12.500, img: "https://images.unsplash.com/photo-1590156221122-c748e7898783?w=500" },
-        { name: "بخور صلالة الفائق", price: 18.000, img: "https://images.unsplash.com/photo-1595981267035-7b04ec82389e?w=500" },
-        { name: "سيروم اللبان الطبيعي", price: 9.900, img: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500" },
+    const products = [
+        { name: "لبان حوجري ملكي فاخر", price: 15.000, img: "https://images.unsplash.com/photo-1602928321679-560bb453f190?w=500" },
+        { name: "عطر ريفان - عبير خاص", price: 32.000, img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500" },
+        { name: "مخمرية العروس الملكية", price: 12.500, img: "https://images.unsplash.com/photo-1590156221122-c748e7898783?w=500" },
+        { name: "بخور صلالة الفاخر", price: 18.000, img: "https://images.unsplash.com/photo-1595981267035-7b04ec82389e?w=500" },
+        { name: "سيروم اللبان للبشرة", price: 9.900, img: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500" },
         { name: "زيت اللبان المركز", price: 7.500, img: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=500" }
     ];
 
     let cart = [];
 
     function render() {
-        document.getElementById('grid').innerHTML = items.map(p => `
-            <div class="product-card">
-                <div class="image-area"><img src="${p.img}"></div>
-                <div class="product-info">
-                    <div class="product-name">${p.name}</div>
-                    <div class="product-price">${p.price.toFixed(3)} ر.ع</div>
-                    <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">أضيفي للسلة +</button>
-                </div>
+        document.getElementById('grid').innerHTML = products.map(p => `
+            <div class="card">
+                <img src="${p.img}" class="card-img" alt="${p.name}">
+                <div class="card-name">${p.name}</div>
+                <div class="card-price">${p.price.toFixed(3)} ر.ع</div>
+                <button class="add-to-cart" onclick="addToCart('${p.name}', ${p.price})">إضافة للسلة</button>
             </div>
         `).join('');
     }
 
     function addToCart(name, price) {
-        const f = cart.find(i => i.name === name);
-        if(f) f.qty++; else cart.push({name, price, qty:1});
+        const item = cart.find(i => i.name === name);
+        if(item) item.qty++; else cart.push({name, price, qty: 1});
         updateUI();
         toggleCart(true);
     }
 
     function updateUI() {
-        document.getElementById('count-ui').innerText = cart.reduce((a,b) => a+b.qty, 0);
-        document.getElementById('cart-list').innerHTML = cart.map((i, idx) => `
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; background:#fdf5f2; padding:10px; border-radius:12px;">
+        document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
+        document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; padding:10px; background:#fdf8f5; border-radius:10px;">
                 <div><strong>${i.name}</strong><br><small>${i.qty} x ${i.price.toFixed(3)}</small></div>
-                <div>${(i.qty*i.price).toFixed(3)} <span onclick="del(${idx})" style="color:red; cursor:pointer; margin-right:8px;">✕</span></div>
+                <div>${(i.qty * i.price).toFixed(3)} <span onclick="del(${idx})" style="color:red; cursor:pointer; margin-right:10px;">✕</span></div>
             </div>
         `).join('');
-        const total = cart.reduce((a,b) => a + (b.qty*b.p), 0); // Corrected
-        document.getElementById('total-price').innerText = cart.reduce((a,b)=>a+(b.qty*b.price),0).toFixed(3);
+        const total = cart.reduce((a, b) => a + (b.qty * b.price), 0);
+        document.getElementById('total-price').innerText = total.toFixed(3);
     }
 
-    function del(idx) { cart.splice(idx,1); updateUI(); }
-    function toggleCart(s) { document.getElementById('cart-panel').classList.toggle('open', s); }
+    function del(idx) { cart.splice(idx, 1); updateUI(); }
+    function toggleCart(s) { document.getElementById('cart-sidebar').classList.toggle('active', s); }
 
     function sendOrder() {
         const name = document.getElementById('user-name').value;
-        if(!name || cart.length === 0) return alert("البيانات ناقصة");
-        let msg = `*طلب جديد من ريفان*\nالاسم: ${name}\n`;
-        cart.forEach(i => msg += `- ${i.name} (${i.qty})\n`);
-        msg += `الإجمالي: ${document.getElementById('total-price').innerText} ر.ع`;
+        if(!name || cart.length === 0) return alert("يرجى إكمال البيانات");
+        let msg = `*طلب شراء - ريفان للجمال*\nالاسم: ${name}\n`;
+        cart.forEach(i => msg += `• ${i.name} (العدد: ${i.qty})\n`);
+        msg += `الإجمالي: ${document.getElementById('total-price').innerText} ريال عماني`;
         window.open(`https://wa.me/96800000000?text=${encodeURIComponent(msg)}`);
     }
 
