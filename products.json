@@ -19,5 +19,12 @@
     "price": 0.003,
     "img": "https://raw.githubusercontent.com/faissaltunisia/souk/main/images/3.jpg",
     "badge": "الأكثر مبيعاً"
+  },
+  {
+    "id": 1767402792449,
+    "name": "كريم الشعر",
+    "price": 1,
+    "img": "https://raw.githubusercontent.com/faissaltunisia/souk/main/images/4.jpg",
+    "badge": "الأكثر مبيعاً"
   }
 ]
