@@ -5,18 +5,16 @@
     <title>إدارة متجر ريفان | نظام ذكي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Cairo', sans-serif; background: #f0f2f5; padding: 40px; display: none; }
-        .admin-wrap { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 5px solid #8b0000; }
-        h1 { color: #8b0000; text-align: center; margin-bottom: 30px; }
-        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: 'Cairo'; outline: none; }
-        input:focus { border-color: #8b0000; }
-        .btn-save { background: #8b0000; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
-        .btn-save:hover { background: #c5a059; }
-        .product-list { margin-top: 40px; border-top: 2px solid #f4f4f4; padding-top: 20px; }
-        .item { display: flex; justify-content: space-between; align-items: center; background: #fafafa; padding: 15px; margin-bottom: 10px; border-radius: 12px; border: 1px solid #eee; }
-        .btn-del { background: #ff4d4d; color: white; border: none; padding: 5px 15px; border-radius: 8px; cursor: pointer; }
-        .hint { grid-column: 1 / -1; font-size: 12px; color: #666; margin-top: -10px; }
+        body { font-family: 'Cairo', sans-serif; background: #f0f2f5; padding: 20px; display: none; }
+        .admin-wrap { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 5px solid #8b0000; }
+        h1 { color: #8b0000; text-align: center; margin-bottom: 20px; font-size: 24px; }
+        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: 'Cairo'; outline: none; width: 100%; }
+        .btn-save { background: #8b0000; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        .product-list { margin-top: 30px; border-top: 2px solid #f4f4f4; padding-top: 20px; }
+        .item { display: flex; justify-content: space-between; align-items: center; background: #fafafa; padding: 10px; margin-bottom: 8px; border-radius: 12px; border: 1px solid #eee; }
+        .btn-del { background: #ff4d4d; color: white; border: none; padding: 5px 12px; border-radius: 8px; cursor: pointer; }
+        @media (max-width: 600px) { .input-group { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -27,67 +25,75 @@
     <div class="input-group">
         <input type="text" id="p-name" placeholder="اسم المنتج">
         <input type="number" id="p-price" step="0.001" placeholder="السعر (ر.ع)">
-        <input type="text" id="p-img" placeholder="اسم الصورة في GitHub (مثال: oil.jpg)">
+        <input type="text" id="p-img" placeholder="اسم الصورة (مثال: oil.jpg)">
         <select id="p-badge">
             <option value="">بدون وسم</option>
             <option value="جديد">وسم: جديد</option>
             <option value="عرض خاص">وسم: عرض خاص</option>
             <option value="الأكثر مبيعاً">الأكثر مبيعاً</option>
         </select>
-        <div class="hint">* إذا كانت الصورة في مجلد images، اكتبي اسمها فقط (مثل shampoo.png).</div>
     </div>
     <button class="btn-save" id="save-btn" onclick="saveProduct()">إضافة وتحديث المتجر الآن</button>
 
     <div class="product-list">
-        <h3>المخزون الحالي في السحابة:</h3>
-        <div id="list">جاري التحميل...</div>
+        <h3>المخزون الحالي:</h3>
+        <div id="list">جاري التحميل من GitHub...</div>
     </div>
 </div>
 
 <script>
-    // 1. نظام الحماية
     const masterPass = "2024";
-    const userPass = prompt("الرجاء إدخال كلمة مرور الإدارة:");
+    const userPass = prompt("كلمة مرور الإدارة:");
 
     if (userPass === masterPass) {
         document.body.style.display = "block";
     } else {
-        alert("خطأ في كلمة المرور!");
+        alert("خطأ!");
         window.location.href = "index.html";
     }
 
-    // 2. إعدادات GitHub
+    // إعدادات GitHub (تأكدي أن الـ Token صحيح ومستودع souk موجود)
     const partA = "ghp_"; 
     const partB = "BEJ0TzUJEYJj2RNxvHEG"; 
     const partC = "NpmFL9RPOp3mkmYm"; 
-
     const TOKEN = partA + partB + partC;
     const OWNER = "faissaltunisia";
     const REPO = "souk";
 
     let currentProducts = [];
+    let currentSha = null;
 
     async function loadData() {
         try {
-            const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/products.json`);
-            if(!res.ok) return null;
+            const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/products.json`, {
+                headers: { "Authorization": `token ${TOKEN}` }
+            });
+            if(res.status === 404) {
+                document.getElementById('list').innerText = "المتجر فارغ، أضيفي أول منتج سيتم إنشاء الملف تلقائياً.";
+                return null;
+            }
             const data = await res.json();
+            currentSha = data.sha;
             currentProducts = JSON.parse(decodeURIComponent(escape(atob(data.content))));
             render();
             return data.sha;
         } catch (e) {
-            document.getElementById('list').innerText = "لا توجد منتجات. أضيفي منتجك الأول!";
+            console.error(e);
             return null;
         }
     }
 
     function render() {
+        if(currentProducts.length === 0) {
+            document.getElementById('list').innerText = "لا توجد منتجات حالياً.";
+            return;
+        }
         document.getElementById('list').innerHTML = currentProducts.map((p, idx) => `
             <div class="item">
-                <img src="${p.img}" width="45" height="45" style="border-radius:8px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/50'">
-                <div style="flex-grow:1; margin-right:15px;">
+                <img src="${p.img}" width="40" height="40" style="border-radius:5px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/40'">
+                <div style="flex-grow:1; margin-right:10px;">
                     <strong>${p.name}</strong><br>
-                    <span style="color:#8b0000; font-size:14px;">${p.price.toFixed(3)} ر.ع</span>
+                    <small>${p.price.toFixed(3)} ر.ع</small>
                 </div>
                 <button class="btn-del" onclick="deleteProduct(${idx})">حذف</button>
             </div>
@@ -100,26 +106,29 @@
         const badge = document.getElementById('p-badge').value;
         let imgInput = document.getElementById('p-img').value;
 
-        if (!name || !price || !imgInput) return alert("يرجى ملء كافة البيانات");
+        if (!name || isNaN(price) || !imgInput) return alert("أكملي البيانات أولاً");
 
-        // الذكاء الاصطناعي للرابط: إذا لم يبدأ بـ http، نعتبره اسم ملف في مجلد images
         const finalImg = imgInput.startsWith('http') 
             ? imgInput 
             : `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/images/${imgInput}`;
 
         const btn = document.getElementById('save-btn');
-        btn.innerText = "جاري الرفع...";
-        btn.disabled = true;
+        btn.innerText = "جاري التحديث..."; btn.disabled = true;
 
         currentProducts.push({ id: Date.now(), name, price, img: finalImg, badge });
         
-        await updateGitHub("إضافة منتج: " + name);
-        alert("تم تحديث المتجر بنجاح!");
-        location.reload();
+        const success = await updateGitHub("تحديث المتجر");
+        if(success) {
+            alert("تم التحديث بنجاح!");
+            location.reload();
+        } else {
+            alert("فشل التحديث! تأكدي من الـ Token أو اسم المستودع.");
+            btn.innerText = "إضافة وتحديث المتجر الآن"; btn.disabled = false;
+        }
     }
 
     async function deleteProduct(index) {
-        if (confirm("هل تريدين حذف هذا المنتج نهائياً؟")) {
+        if (confirm("حذف المنتج؟")) {
             currentProducts.splice(index, 1);
             await updateGitHub("حذف منتج");
             render();
@@ -127,17 +136,25 @@
     }
 
     async function updateGitHub(msg) {
-        const sha = await loadData();
-        const content = btoa(unescape(encodeURIComponent(JSON.stringify(currentProducts, null, 2))));
-        
-        await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/products.json`, {
-            method: "PUT",
-            headers: { 
-                "Authorization": `token ${TOKEN}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ message: msg, content, sha })
-        });
+        try {
+            const body = {
+                message: msg,
+                content: btoa(unescape(encodeURIComponent(JSON.stringify(currentProducts, null, 2))))
+            };
+            if (currentSha) body.sha = currentSha;
+
+            const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/products.json`, {
+                method: "PUT",
+                headers: { 
+                    "Authorization": `token ${TOKEN}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            });
+            return res.ok;
+        } catch (e) {
+            return false;
+        }
     }
 
     loadData();
